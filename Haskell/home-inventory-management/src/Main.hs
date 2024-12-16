@@ -7,15 +7,34 @@ import Text.Megaparsec.Error
 import Data.Char as C 
 import Control.Monad (liftM2)
 import Data.List ((\\), partition)
+import Brick
 
 main = do 
     putStrLn "Haskell Home Inventory Management System"
     pairs <- getPairs (pure [])
-    let sorted = sortPairs (head pairs)  (pairs)
-    putStrLn $ show pairs 
-    putStrLn $ show sorted 
-    
-sortPairs :: (Item, Location) -> [(Item, Location)] -> Sorted 
+    let areas = case sortPairs (head pairs)  (pairs) of 
+                 (Sorted areas') -> areas'
+    simpleMain (vBox $ drawAreas areas)
+
+------------------------------
+data ViewPort = ViewPort deriving (Eq, Show, Ord)
+drawAreas :: [Area] -> [Widget ViewPort] 
+drawAreas areas = 
+    case areas of 
+        [] -> []
+        ((Area items) : areas) -> (hBox $ drawPairs items) : (drawAreas areas)
+
+drawPairs :: [(Item, Types.Location)] -> [Widget ViewPort] 
+drawPairs items = 
+    case items of 
+        [] -> [] 
+        (i : is) -> (vBox [drawPair i]) : (drawPairs is)
+
+drawPair :: (Item, Types.Location) -> Widget ViewPort 
+drawPair (item, location) = 
+         hBox [str $ "item: " ++ (show item), str $ "   location: " ++ (show location)]
+--------------------------------------------------
+sortPairs :: (Item, Types.Location) -> [(Item, Types.Location)] -> Sorted 
 sortPairs pair1 carryingbag = 
     case partition (equalLocations pair1) carryingbag of 
         (does, doesnot) -> 
@@ -36,7 +55,7 @@ getItem = do
                    getItem 
         Right r -> return r
 
-getLocation :: IO Location
+getLocation :: IO Types.Location
 getLocation = do 
     maybeItem <- getLine 
     case parse parseLocation "" maybeItem of 
@@ -47,7 +66,7 @@ getLocation = do
                    getLocation
         Right r -> return r
 
-getPairs :: IO [(Item,Location)] -> IO [(Item, Location)]
+getPairs :: IO [(Item,Types.Location)] -> IO [(Item, Types.Location)]
 getPairs iol = do 
     putStr "Enter item: "
     hFlush stdout 
