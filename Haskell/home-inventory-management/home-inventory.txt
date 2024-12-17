@@ -1,4 +1,10 @@
 Keys Location "bedroom"
-Wallet Location "bedroom"
+Item "walley" Location "bedroom"
 Phone Location "bedroom"
-Glasses Location "bedroom"
+------------
+Item "milk" Location "fridge"
+Item "cheese" Location "fridge"
+------------
+Item "dog" Location "office"
+Item "cat" Location "office"
+------------

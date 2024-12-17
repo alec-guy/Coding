@@ -22,7 +22,7 @@ title = text "Home-inventory"
 areasToDoc :: [Area] -> Doc String 
 areasToDoc areas = vcat $ map areaToDoc areas
 areaToDoc :: Area -> Doc String 
-areaToDoc (Area l) = vcat $ map pairToDoc l
+areaToDoc (Area l) = vcat ((map pairToDoc l) ++ ([(text "------------") :: Doc String]))
 pairToDoc :: (Item, Types.Location) -> Doc String 
 pairToDoc (item, location) =  text ((show item )++ " " ++ (show location)) 
 
