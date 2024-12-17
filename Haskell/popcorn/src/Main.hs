@@ -1,4 +1,7 @@
 module Main where
+    
+import Yesod 
+import Yesod.Default.Main
 
 import Types 
 
@@ -8,4 +11,4 @@ main = do
     putStrLn "Infinite Popcorn Program"
     putStrLn "How many popcorn would you like from the infinite bowl?"
     numPop <- readLn :: IO Int
-    putStrLn $ show $ fromList $ take numPop pseudoPopcornBowl
+    putStrLn $ show $ fromPseudoList $ take numPop pseudoPopcornBowl
