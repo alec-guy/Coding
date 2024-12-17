@@ -1,0 +1,4 @@
+Keys Location "bedroom"
+Wallet Location "bedroom"
+Phone Location "bedroom"
+Glasses Location "bedroom"

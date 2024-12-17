@@ -7,32 +7,25 @@ import Text.Megaparsec.Error
 import Data.Char as C 
 import Control.Monad (liftM2)
 import Data.List ((\\), partition)
-import Brick
+import Text.DocLayout
 
 main = do 
     putStrLn "Haskell Home Inventory Management System"
     pairs <- getPairs (pure [])
     let areas = case sortPairs (head pairs)  (pairs) of 
                  (Sorted areas') -> areas'
-    simpleMain (vBox $ drawAreas areas)
+    writeFile "home-inventory.txt" (render Nothing (areasToDoc areas)) 
 
-------------------------------
-data ViewPort = ViewPort deriving (Eq, Show, Ord)
-drawAreas :: [Area] -> [Widget ViewPort] 
-drawAreas areas = 
-    case areas of 
-        [] -> []
-        ((Area items) : areas) -> (hBox $ drawPairs items) : (drawAreas areas)
+title :: Doc String 
+title = text "Home-inventory"
 
-drawPairs :: [(Item, Types.Location)] -> [Widget ViewPort] 
-drawPairs items = 
-    case items of 
-        [] -> [] 
-        (i : is) -> (vBox [drawPair i]) : (drawPairs is)
+areasToDoc :: [Area] -> Doc String 
+areasToDoc areas = vcat $ map areaToDoc areas
+areaToDoc :: Area -> Doc String 
+areaToDoc (Area l) = vcat $ map pairToDoc l
+pairToDoc :: (Item, Types.Location) -> Doc String 
+pairToDoc (item, location) =  text ((show item )++ " " ++ (show location)) 
 
-drawPair :: (Item, Types.Location) -> Widget ViewPort 
-drawPair (item, location) = 
-         hBox [str $ "item: " ++ (show item), str $ "   location: " ++ (show location)]
 --------------------------------------------------
 sortPairs :: (Item, Types.Location) -> [(Item, Types.Location)] -> Sorted 
 sortPairs pair1 carryingbag = 
