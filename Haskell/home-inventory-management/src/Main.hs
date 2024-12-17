@@ -20,11 +20,11 @@ title :: Doc String
 title = text "Home-inventory"
 
 areasToDoc :: [Area] -> Doc String 
-areasToDoc areas = vcat $ map areaToDoc areas
+areasToDoc areas = hcat $ map areaToDoc areas
 areaToDoc :: Area -> Doc String 
-areaToDoc (Area l) = vcat ((map pairToDoc l) ++ ([(text "------------") :: Doc String]))
+areaToDoc (Area l) = vcat (map pairToDoc l)
 pairToDoc :: (Item, Types.Location) -> Doc String 
-pairToDoc (item, location) =  text ((show item )++ " " ++ (show location)) 
+pairToDoc (item, location) = brackets (text ((show item )++ " " ++ (show location))) 
 
 --------------------------------------------------
 sortPairs :: (Item, Types.Location) -> [(Item, Types.Location)] -> Sorted 
