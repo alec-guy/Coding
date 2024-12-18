@@ -28,12 +28,14 @@ type alias Model = { loading         : Bool
                    }
 view : Model -> Html Msg 
 view model = div 
-             [] 
+             [style "background-color" "yellow"
+             ,style "text-align" "center"
+             ] 
              [h1 [] [text "Popcorn Getter"]
              ,br [] []
              ,text "Enter popcorn ex: 10"
              ,br [] []
-             ,input [onInput Popcorn,  maxlength 3] []
+             ,input [onInput Popcorn,  maxlength 2] []
              ,br [] []
              ,button [onClick SubmitPop] [text "submit"]
              ,br [] []
