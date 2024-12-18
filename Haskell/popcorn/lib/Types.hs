@@ -13,6 +13,10 @@ data Popcorn = Unpopped
 data Bowl a  = Single a (Bowl a)
              | Air
              deriving (Show , Eq)
+newtype JsonPopcorn = JsonPopcorn String deriving (Show, Eq)
+
+instance FromJSON JsonPopcorn where 
+    parseJSON (String t) = return $ JsonPopcorn (unpack t)
 
 instance Foldable Bowl where 
     foldr binaryFunc acc folder = 
